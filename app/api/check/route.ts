@@ -14,11 +14,11 @@ export async function GET(req: NextRequest) {
       return match?.[1] || "";
     };
 
-    const titleMatch = html.match(/<title[^>]*>(.*?)<\/title>/is);
+    const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
     const title = titleMatch?.[1]?.trim() || "";
     const description = getTag("description");
     const canonical = html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']*)["']/i)?.[1] || "";
-    const h1s = [...html.matchAll(/<h1[^>]*>(.*?)<\/h1>/gis)].map((m) => m[1].replace(/<[^>]*>/g, "").trim());
+    const h1s = [...html.matchAll(/<h1[^>]*>([^<]*)<\/h1>/gi)].map((m) => m[1].replace(/<[^>]*>/g, "").trim());
     const imgCount = (html.match(/<img /gi) || []).length;
     const imgNoAlt = (html.match(/<img (?![^>]*alt=)[^>]*>/gi) || []).length;
 
